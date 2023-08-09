@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  font-family: 'Press Start 2P';
+  font-size: 0.8rem;
+  margin: 0px;
+}
+
+.wrapper {
+  display: grid;
+  position: relative;
+  grid-template-rows: 60px 1fr;
+  width: 700px;
+  margin: 0 auto;
+}
+
+.wrapper-rest {
+  display: grid;
+  grid-template-columns: 0.9fr 1.5fr 1fr;
+}
+
+.top {
+  background-color: rgb(31, 31, 31);
+  color: rgb(226, 226, 226);
+}
+
+.left {
+  background-color: rgb(31, 31, 31);
+  color: rgb(226, 226, 226);
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+}
+
+.board {
+  background-color: rgb(31, 31, 31);
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+.stats {
+  background-color: rgb(31, 31, 31);
+  color: rgb(226, 226, 226);
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 5px;
+}
+
+.title {
+  margin-top: 5px;
+  margin-bottom: 12px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.title-options {
+  display: inline;
+  cursor: pointer;
+  padding: 3px;
+}
+
+.new-game {
+  margin-left: 190px;
+}
+
+.self-disabled, .self-enabled {
+  display: inline;
+  cursor: pointer;
+  padding: 3px;
+  margin-left: 125px;
+}
+
+.title-options:hover, .self-disabled:hover, .self-enabled {
+  background-color: rgb(231, 88, 62);
+}
+
+.title-options:active, .self-disabled:active, .self-enabled:active {
+  color: rgb(31, 31, 31);
+  background-color: rgb(226, 226, 226);
+}
+
+.left-score, .right-score {
+  position: relative;  
+}
+
+.instructions-title {
+  color: rgb(231, 88, 62);
+  padding-bottom: 6px;
+}
+
+.left-score, .left-help, .right-score {
+  border: 2px solid rgb(206, 170, 13);
+  padding: 4px;
+}
+
+.left-score {
+  height: 65px;
+}
+
+.score-tag, .score {
+  display: inline;
+}
+
+.score {
+  position: absolute;
+  right: 0px;
+  padding-right: 4px;
+}
+
+.img-stats-cyan {
+  width: 40px;
+}
+
+.img-stats-rest {
+  width: 31px;
+}
+
+.img-stats-yellow {
+  width: 20px;
+}
+
+
+.stats-title {
+  color: rgb(231, 88, 62);
+  margin-bottom: 5px;
+}
+
+table, tr, td {
+  border: 2px dotted rgb(206, 170, 13);
+  border-collapse: collapse;
+}
+
+/*table {
+  width: 100%;
+}*/
+
+tr {
+  height: 25px;
+}
+
+td {
+  width: 25px;
+}
+
+.img {
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  width: 25px;
+  height: 21px;
+}
+
+#game-over {
+  position: absolute;
+  left: 40%;
+  top: 40%;  
+  background-color: rgb(31, 31, 31);
+  color: rgb(231, 88, 62);
+  border: 2px solid rgb(206, 170, 13);
+  padding: 10px;
+}

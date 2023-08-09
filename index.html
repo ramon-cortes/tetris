@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="icon" href="./img/icon.ico">
+  <title>Auto Tetris</title>
+</head>
+<body>
+
+  <div class="wrapper">
+    <div class="top">
+      <p class="title">JAVASCRIPT TETRIS</p>
+      <div id="new-game" class="title-options new-game">NEW GAME</div>
+      <div id="self-played" class="self-disabled">SELF-ENABLED</div>      
+    </div>
+    <div class="wrapper-rest">
+      <div class="left">
+        <div class="left-score">
+          <div class="score-tag">SCORE:</div>
+          <div id="score" class="score"></div><br>
+          <div class="score-tag">LINES:</div>
+          <div id="lines" class="score"></div><br>
+          <div class="score-tag">NEXT:</div>
+          <div class="score"><img id="next-img" src="./img/blank.png" alt="[next]"></div><br>
+        </div><br><br>
+        <div class="left-help">
+          <div class="instructions-title">INSTRUCTIONS</div> 
+          ← LEFT <br>
+          → RIGHT <br>
+          ↑ ROTATE <br>
+          ↓ DROP <br>
+        </div>
+      </div>
+
+      <!-- GAME BOARD -->
+      <div id="board" class="board">        
+
+      </div>
+      <div class="stats"> 
+        <div class="right-score">
+          <div class="stats-title">STATISTICS</div>
+          <div class="stats-tag"><img class="img-stats-cyan" src="./img/cyan.png"></div>
+          <div id="tetro1" class="score">-</div><br>
+          <div class="stats-tag"><img class="img-stats-rest" src="./img/blue.png"></div>
+          <div id="tetro2" class="score">-</div><br>
+          <div class="stats-tag"><img class="img-stats-rest" src="./img/orange.png"></div>
+          <div id="tetro3" class="score">-</div><br>
+          <div class="stats-tag"><img class="img-stats-yellow" src="./img/yellow.png"></div>
+          <div id="tetro4" class="score">-</div><br>
+          <div class="stats-tag"><img class="img-stats-rest" src="./img/green.png"></div>
+          <div id="tetro5" class="score">-</div><br>
+          <div class="stats-tag"><img class="img-stats-rest" src="./img/magenta.png"></div>
+          <div id="tetro6" class="score">-</div><br>
+          <div class="stats-tag"><img class="img-stats-rest" src="./img/red.png"></div>
+          <div id="tetro7" class="score">-</div><br>
+        </div>
+      </div>
+    </div>
+    
+    <div id="game-over">GAME OVER <br><br>"SOQUETE"</div>
+  </div>
+
+  <script type="module" src="./tetris.js"></script>
+  
+</body>
+</html>
