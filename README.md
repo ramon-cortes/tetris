@@ -2,5 +2,7 @@
 
 Need I say more?
 
-Size 10x20
-Module mode
+Since the script is in "module" mode you will need a virtual server to run it locally (like http-server, Visual Studio's live server, etc)
+
+Min. Screen Size: 700x580
+Board Size: 10x20
