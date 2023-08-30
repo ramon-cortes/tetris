@@ -107,6 +107,10 @@ body {
   padding-right: 4px;
 }
 
+.stats-tag {
+  display: inline;
+}
+
 .img-stats-cyan {
   width: 40px;
 }
@@ -118,7 +122,6 @@ body {
 .img-stats-yellow {
   width: 20px;
 }
-
 
 .stats-title {
   color: rgb(231, 88, 62);

@@ -2,10 +2,6 @@ import * as lib from './lib.js';
 
 // VARS
 let boardData = lib.createBoard();
-  /*let active = {
-    x: [],
-    y: []
-  }*/
 const state = {
   selfPlayed: false,
   running: false,
@@ -75,9 +71,13 @@ function selfToggle() {
 }
 
 // NEW GAME
-let id = 0;
+let id = 0, idSelf = 0;
 function newGame() {
   if (id) clearInterval(id);
+  if (idSelf) {
+    clearInterval(idSelf);
+    idSelf = 0;
+  }
   gameOver.style.display = 'none';
   state.lines = 0, state.score = 0, state.stats = [0,0,0,0,0,0,0];
   // Creates board, places new tetro, chooses next tetro
@@ -88,21 +88,14 @@ function newGame() {
   boardData = lib.newTetro(boardData, state.next, false);
   state.stats[state.next]++;
   state.next = lib.randomTetro();
-  boardData[19][0] = 'y';
-  boardData[19][1] = 'c';
-  boardData[19][2] = 'c';
-  boardData[19][4] = 'c';
-  boardData[19][5] = 'g';
-  boardData[19][6] = 'c';
-  boardData[19][7] = 'c';
-  boardData[19][8] = 'b';
+
+  // Add debris
+  //boardData[14][5] = 'r';  
+  
   state.running = true;
   boardData = lib.renderBoard(boardData, state);
 
-  //lib.cleanBoard(boardData);
-  //console.log(JSON.stringify(boardData));
-  //console.log(tetros[lib.randomTetro()]);
-
+  
   // Start Game (setInterval)  
   id = setInterval(() => {
     if (state.running) {
@@ -117,21 +110,48 @@ function newGame() {
           boardData = lib.newTetro(boardData, state.next, false);
           state.stats[state.next]++;
           state.next = lib.randomTetro();
-          state.score++; // 1 point per new tetro
-          
+          state.score++; // 1 point per new tetro          
         }        
       }
-      
+
+      //-----------SELF PLAY MODE-----------
+      if (!idSelf && state.selfPlayed) {
+        let borrar = 0;        
+        idSelf = setInterval(() => {
+          if (!state.selfPlayed) {
+            clearInterval(idSelf);
+            idSelf = 0;
+          }
+          boardData = lib.selfPlay(boardData, state);
+
+
+        }, 400); //100 para que cyan llegue a los extremos laterales
+      }
+      //-----------SELF PLAY MODE-----------
+
+      // Update score, lines & render
       state.score += lib.completeLines(boardData); // 10 points per line
       state.lines += lib.completeLines(boardData) / 10;
-      boardData = lib.renderBoard(boardData, state);
-      
+      boardData = lib.renderBoard(boardData, state);      
     } else {
       // Game over
       clearInterval(id);
     }
-  }, 750);
-  //lib.renderBoard(boardData);
+  }, 1700);
   
+  // SELFPLAYED OR TETRIS-SOLVER
+  /*let borrar = 0;
+  if (state.running && state.selfPlayed) {
+    idSelf = setInterval(() => {
+      if (!state.selfPlayed) {
+        clearInterval(idSelf);
+        idSelf = 0;
+      }
+      //console.log('trying to solve the Tetris...', borrar);
+      borrar++;
+
+
+    }, 1000)
+  }*/
 
 }
