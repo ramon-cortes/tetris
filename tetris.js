@@ -90,8 +90,10 @@ function newGame() {
   state.next = lib.randomTetro();
 
   // Add debris
-  //boardData[14][5] = 'r';  
-  
+  //boardData[14][5] = 'r'; 
+  //boardData[10][5] = 'r';
+
+    
   state.running = true;
   boardData = lib.renderBoard(boardData, state);
 
@@ -116,7 +118,7 @@ function newGame() {
 
       //-----------SELF PLAY MODE-----------
       if (!idSelf && state.selfPlayed) {
-        let borrar = 0;        
+        //let borrar = 0;        
         idSelf = setInterval(() => {
           if (!state.selfPlayed) {
             clearInterval(idSelf);
@@ -125,7 +127,7 @@ function newGame() {
           boardData = lib.selfPlay(boardData, state);
 
 
-        }, 400); //100 para que cyan llegue a los extremos laterales
+        }, 100); //100 para que cyan llegue a los extremos laterales
       }
       //-----------SELF PLAY MODE-----------
 
@@ -137,7 +139,7 @@ function newGame() {
       // Game over
       clearInterval(id);
     }
-  }, 1700);
+  }, 1000);
   
   // SELFPLAYED OR TETRIS-SOLVER
   /*let borrar = 0;

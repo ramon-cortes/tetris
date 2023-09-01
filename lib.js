@@ -10,31 +10,31 @@ const tetros = ['c','b','o','y','g','m','r'];
 const tetrosNext = ['cyan', 'blue', 'orange', 'yellow', 'green', 'magenta', 'red'];
 const tetrosArr = [
   {
-    i: [0, 0, 0, 0],
+    i: [1, 1, 1, 1],
     j: [3, 4, 5, 6]
   },
   {
-    i: [0, 1, 1, 1],
+    i: [1, 2, 2, 2],
     j: [4, 4, 5, 6]
   },
   {
-    i: [0, 0, 0, 1],
+    i: [1, 1, 1, 2],
     j: [4, 5, 6, 4]
   },
   {
-    i: [0, 0, 1, 1],
+    i: [1, 1, 2, 2],
     j: [4, 5, 4, 5]
   },
   {
-    i: [0, 0, 1, 1],
+    i: [1, 1, 2, 2],
     j: [5, 6, 4, 5]
   },
   {
-    i: [0, 0, 0, 1],
+    i: [1, 1, 1, 2],
     j: [4, 5, 6, 5]
   },
   {
-    i: [0, 0, 1, 1],
+    i: [1, 1, 2, 2],
     j: [4, 5, 5, 6]
   },
 ];
@@ -461,7 +461,7 @@ function patternExists(boardData, pattern, y, x) {
   //let fits = true;
   for (let i = y - (pattern.length - 1), k = 0; i <= y; i++, k++) {
     for (let j = x, l = 0; j < x + pattern[0].length; j++, l++) {
-      if (pattern[k][l] !== '*') {
+      if (pattern[k][l] !== '*' && !/[A-Z]/.test(boardData[i][j])) {
         if ((pattern[k][l] === '' && boardData[i][j] !== '') || (pattern[k][l] !== '' && boardData[i][j] === '') || /[A-Z]/.test(boardData[i][j])) {
           return false;
         }   
@@ -470,6 +470,7 @@ function patternExists(boardData, pattern, y, x) {
   }
   return true;
 }
+//boardData[i][j] !== ''
 
 // Searchs for a pattern in the area starting at x,y ending xFinal,yFinal
 function patternExistsArea(boardData, pattern, y, x, yFinal, xFinal) {
@@ -522,10 +523,10 @@ export function selfPlay(boardData, state) {
   // ---YELLOW---
   if (color === 'Y') {
     // Bottom left ↓
-    if (patternExists(boardData, patterns.yellow[0], 19, 0)) {
+    if (patternExistsArea(boardData, patterns.yellow[0], 19, 0, 19, 0)) {
       boardData = chooseDirectionDrop(boardData, state, miniBoard, 0);
       // Bottom right
-    } else if (patternExists(boardData, patterns.yellow[1], 19, 7)) {
+    } else if (patternExistsArea(boardData, patterns.yellow[1], 19, 7, 19, 7)) {
       boardData = chooseDirectionDrop(boardData, state, miniBoard, 8);
       // All bottom
     } else if (patternExistsArea(boardData, patterns.yellow[12], 19, 0, 19, 8)) { 
@@ -543,10 +544,10 @@ export function selfPlay(boardData, state) {
     } else if (patternExistsArea(boardData, patterns.yellow[5], 19, 0, 3, 6)) { 
       boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere + 1);
       // Bottom left small
-    } else if (patternExists(boardData, patterns.yellow[6], 19, 0)) { 
+    } else if (patternExistsArea(boardData, patterns.yellow[6], 19, 0, 19, 0)) { 
       boardData = chooseDirectionDrop(boardData, state, miniBoard, 0);
       // Bottom right small
-    } else if (patternExists(boardData, patterns.yellow[7], 19, 7)) { 
+    } else if (patternExistsArea(boardData, patterns.yellow[7], 19, 7, 19, 7)) { 
       boardData = chooseDirectionDrop(boardData, state, miniBoard, 8);
       // Bottom center small
     } else if (patternExistsArea(boardData, patterns.yellow[8], 19, 0, 19, 6)) { 
@@ -900,7 +901,7 @@ export function selfPlay(boardData, state) {
     if (patternExistsArea(boardData, patterns.magenta[0], 19, 0, 19, 7)) {
       boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere);
     } else if (patternExistsArea(boardData, patterns.magenta[1], 19, 0, 19, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["M","M","M"]`) renderBoard(boardData);
+      if (JSON.stringify(miniBoard.array[0]) === `["M","M","M"]`) boardData = rotate(boardData);
       boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere);
     } else if (patternExistsArea(boardData, patterns.magenta[2], 19, 0, 19, 8)) {
       if (JSON.stringify(miniBoard.array[0]) === `["M","M","M"]`) {
@@ -968,101 +969,142 @@ export function selfPlay(boardData, state) {
     }
     // ---CYAN---
   } else if (color === 'C' && miniBoard.up > -1) {
-    if (patternExistsArea(boardData, patterns.cyan[0], 19, 0, 15, 0)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[1], 19, 8, 15, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[2], 19, 0, 15, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[3], 19, 0, 15, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[4], 19, 0, 15, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[5], 19, 0, 15, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[6], 19, 0, 15, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[7], 19, 0, 15, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) {
-        boardData = rotate(boardData);        
-      } else {
-        miniBoard.left = miniBoard.leftOriginal;
-      }
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere + 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[8], 19, 0, 19, 9)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[0], 14, 0, 10, 0)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[1], 14, 8, 10, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[2], 14, 0, 10, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[3], 14, 0, 10, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[4], 14, 0, 10, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[5], 14, 0, 10, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[6], 14, 0, 10, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[7], 14, 0, 10, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) {
-        boardData = rotate(boardData);        
-      } else {
-        miniBoard.left = miniBoard.leftOriginal;
-      }
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere + 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[0], 9, 0, 4, 0)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[1], 9, 8, 4, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[2], 9, 0, 4, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[3], 9, 0, 4, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[4], 9, 0, 4, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[5], 9, 0, 4, 7)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 1);
-    } else if (patternExistsArea(boardData, patterns.cyan[6], 9, 0, 4, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) boardData = rotate(boardData);
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere - 2);
-    } else if (patternExistsArea(boardData, patterns.cyan[7], 9, 0, 4, 8)) {
-      if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) {
-        boardData = rotate(boardData);        
-      } else {
-        miniBoard.left = miniBoard.leftOriginal;
-      }
-      boardData = chooseDirectionDrop(boardData, state, miniBoard, dropHere + 1);
+    if (JSON.stringify(miniBoard.array[0]) === `["C","C","C","C"]`) {
+      boardData = rotate(boardData);
     } else {
-      boardData = drop(boardData);
+      miniBoard.left = miniBoard.leftOriginal;      
     }
-  }  
+    
+    let cyanLocations = new Array(10).fill(0);
 
-  
+    // Search for pattern 0 everywhere
+    for (let j = 0; j < 8; j++) {
+      for (let i = 4; i < 20; i++) {      
+        if (patternExists(boardData, patterns.cyan[0], i, j)) {
+          // If pattern exists here, confirm its clear above "up"
+          let clearedUp = true;
+          for (let y = 0; y < i + 1; y++) {
+            if (/[a-z]/.test(boardData[y][j+1])) {
+              clearedUp = false;
+              break;
+            }          
+          }
+          // If its clear "up" check how many spots its clear below "down"
+          if (clearedUp) {
+            cyanLocations[j+1] = 1;
+            if (i < 19) {
+              for (let y = i + 1; y < 20; y++) {
+                if (!/[a-z]/.test(boardData[y][j+1])) {
+                  cyanLocations[j+1] = 1 + y - i;
+                  if (y === 19) i = 20;
+                } else {
+                  y = 20;
+                  i = 20;
+                }
+              }
+            }            
+          }
+        }      
+      }
+    }    
+
+    // Search for pattern 1
+    for (let i = 4; i < 20; i++) {      
+      if (patternExists(boardData, patterns.cyan[1], i, 0)) {
+        // If pattern exists here, confirm its clear above "up"
+        let clearedUp = true;
+        for (let y = 0; y < i + 1; y++) {
+          if (/[a-z]/.test(boardData[y][0])) {
+            clearedUp = false;
+            break;
+          }          
+        }
+        // If its clear "up" check how many spots its clear below "down"
+        if (clearedUp) {
+          cyanLocations[0] = 1.5;
+          if (i < 19) {
+            for (let y = i + 1; y < 20; y++) {
+              if (!/[a-z]/.test(boardData[y][0])) {
+                cyanLocations[0] = 1.5 + y - i;
+                if (y === 19) i = 20;
+              } else {
+                y = 20;
+                i = 20;
+              }
+            }
+          }            
+        }
+      }
+    }
+    // Search for pattern 2
+    for (let i = 4; i < 20; i++) {      
+      if (patternExists(boardData, patterns.cyan[2], i, 8)) {
+        // If pattern exists here, confirm its clear above "up"
+        let clearedUp = true;
+        for (let y = 0; y < i + 1; y++) {
+          if (/[a-z]/.test(boardData[y][9])) {
+            clearedUp = false;
+            break;
+          }          
+        }
+        // If its clear "up" check how many spots its clear below "down"
+        if (clearedUp) {
+          cyanLocations[9] = 1.6;
+          if (i < 19) {
+            for (let y = i + 1; y < 20; y++) {
+              if (!/[a-z]/.test(boardData[y][9])) {
+                cyanLocations[9] = 1.6 + y - i;
+                if (y === 19) i = 20;
+              } else {
+                y = 20;
+                i = 20;
+              }
+            }
+          }            
+        }
+      }
+    }
+
+    // Find highest scored location
+    let arr = [...cyanLocations].sort((a, b) => b - a);
+    let hereCyan = cyanLocations.findIndex((e) => e === arr[0]);
+    boardData = chooseDirectionDrop(boardData, state, miniBoard, hereCyan);    
+  }  
 
   boardData = renderBoard(boardData, state);
   return boardData;
 }
 // -------------Self Play-------------
+
+/*
+const tetrosArr = [
+  {
+    i: [0, 0, 0, 0],
+    j: [3, 4, 5, 6]
+  },
+  {
+    i: [0, 1, 1, 1],
+    j: [4, 4, 5, 6]
+  },
+  {
+    i: [0, 0, 0, 1],
+    j: [4, 5, 6, 4]
+  },
+  {
+    i: [0, 0, 1, 1],
+    j: [4, 5, 4, 5]
+  },
+  {
+    i: [0, 0, 1, 1],
+    j: [5, 6, 4, 5]
+  },
+  {
+    i: [0, 0, 0, 1],
+    j: [4, 5, 6, 5]
+  },
+  {
+    i: [0, 0, 1, 1],
+    j: [4, 5, 5, 6]
+  },
+];
+*/
