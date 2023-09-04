@@ -127,7 +127,7 @@ function newGame() {
           boardData = lib.selfPlay(boardData, state);
 
 
-        }, 100); //100 para que cyan llegue a los extremos laterales
+        }, 30); //100 para que cyan llegue a los extremos laterales
       }
       //-----------SELF PLAY MODE-----------
 

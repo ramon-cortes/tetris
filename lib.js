@@ -979,7 +979,7 @@ export function selfPlay(boardData, state) {
 
     // Search for pattern 0 everywhere
     for (let j = 0; j < 8; j++) {
-      for (let i = 4; i < 20; i++) {      
+      for (let i = 4; i < 20; i++) {
         if (patternExists(boardData, patterns.cyan[0], i, j)) {
           // If pattern exists here, confirm its clear above "up"
           let clearedUp = true;
